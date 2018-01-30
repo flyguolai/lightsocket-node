@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
-import R from "ramda";
+var Buffer = require('buffer').Buffer;
+var R = require("ramda");
 
 /**
  * @class Cipher - 生成一个Cipher对象
@@ -11,7 +11,7 @@ class Cipher{
      * @param {Base64} encodePassword 
      * @param {Base64} decodePassword 
      */
-    constructor( encodePassword = null , decodePassword = null ){
+    constructor( encodePassword = null){
         var decodePassword = Buffer.alloc(256);
         encodePassword.map(function(v,k){
             return decodePassword[v] = k;
@@ -42,3 +42,4 @@ class Cipher{
 
 }
 
+module.exports = Cipher;

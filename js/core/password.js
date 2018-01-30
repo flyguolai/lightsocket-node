@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+var {Buffer} =require("buffer");
 
 const R = require("ramda");
 
@@ -41,4 +41,11 @@ function RandomPassword(){
         return Math.random() > .5 ? -1 : 1;
     })
     return arrays.filter(function(a_v,a_k){return a_v == a_k}).length == 0 ? RandomPassword() : arrays;
+}
+
+module.exports = {
+    init : init,
+    StringifyPassword : StringifyPassword,
+    ParsePassword : ParsePassword,
+    RandomPassword : RandomPassword
 }

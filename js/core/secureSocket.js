@@ -1,7 +1,6 @@
-import {} from 'fs'
-import R from 'ramda'
-import { Buffer } from 'buffer';
-import { Socket } from 'dgram';
+const R = require('ramda')
+const { Buffer } = require('buffer');
+const { Socket } = require('net');
 
 const BUFFER_SIZE = 1024;
 
@@ -40,14 +39,21 @@ class SecureSocket{
         return this.socket.write(bs)
     }
 
+    /**
+     * 从src中读取原数据加密后写入到远程服务器，直到src中没有东西可以读取
+     */
     encodeCopy(){
         var buffer = Buffer.alloc(BUFFER_SIZE);
         this.socket.on('data',function(buffer){
-            
-        })    
+            this.encodeWrite(buffer)
+        })
     }
 
+    /**
+     * 从src中读取加密后的数据进行解密，然后写入到本地服务器，知道src中没有东西可以读取
+     */
     decodeCopy(){
+        var buffer = Buffer.alloc(BUFFER_SIZE);
 
     }
 
@@ -55,10 +61,18 @@ class SecureSocket{
         this.socket = new Socket();
         this.socket.connect({
             port:this.remoteAddr.port,
-            ip:this.remoteAddr.ip            
+            ip:this.remoteAddr.ip,
+            format:this.remoteAddr.format
+        })
+
+        this.socket.on('close',function(e){
+            console.log(e)
+            console.log(`连接到远程服务器${this.remoteAddr.ip}:${this.remoteAddr.port}失败`)
         })
 
     }
 
 
 }
+
+exports.modules = SecureSocket;
