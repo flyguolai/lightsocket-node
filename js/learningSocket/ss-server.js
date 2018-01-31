@@ -1,29 +1,33 @@
-const net = require("net");
+const net = require("net"),
+      colors = require("colors");
 
-var LocalServer = net.createServer((conn)=>{
-    console.log('client connected')
+//接收从localServer传来的消息并转发给目标服务器
+var ssServer = net.createServer((conn)=>{
+    console.log('sslocal connected')
     conn.on('end',function(){
-        console.log('client disconnected')
+        console.log('sslocal disconnected')
     })
-    conn.write('hello')
+    conn.on('data',function(data){
+        console.log('########'.green)
+        console.log(data)
+        console.log(data.toString('utf-8').blue)
+    })
     conn.on('error',function(e){
         console.log(e)
     })
     conn.on('close',function(e){
         console.log(e)
     })
-    conn.pipe(conn)
 })
 
-LocalServer.on('error',function(err){
+ssServer.on('error',function(err){
     throw err;
 })
 
-LocalServer.listen(10086,function(){
-    console.log('the local Server is listening')
+ssServer.listen(10086,function(){
+    console.log('the lightSocket Server is listening')
 })
 
-
-LocalServer.on('close',function(){
-    console.log('localsocket close');
+ssServer.on('close',function(){
+    console.log('ssServer close');
 })
